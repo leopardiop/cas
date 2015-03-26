@@ -29,10 +29,11 @@
     <import resource="spring-configuration/propertyFileConfigurer.xml"/>
 
     <bean id="provideLoginTicketAction" class="org.jasig.cas.web.flow.ProvideLoginTicketAction"
-          p:ticketIdGenerator-ref="loginTicketUniqueIdGenerator"/>
+          p:ticketIdGenerator-ref="loginTicketUniqueIdGenerator" p:loginedRegistry-ref="loginedRegistry"/>
 
     <bean id="ajaxLoginServiceTicketAction" class="org.jasig.cas.web.flow.AjaxLoginServiceTicketAction"
-          p:ticketIdGenerator-ref="loginTicketUniqueIdGenerator"/>
+          p:ticketIdGenerator-ref="loginTicketUniqueIdGenerator" p:loginedRegistry-ref="loginedRegistry"
+          p:ticketRegistry-ref="ticketRegistry"/>
 
     <!-- Theme Resolver -->
     <bean id="themeResolver" class="org.jasig.cas.services.web.ServiceThemeResolver"

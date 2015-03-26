@@ -15,6 +15,6 @@
     <logger name="org.springframework" level="info">
     </logger>
 
-    <logger name="org.jasig.cas" level="debug">
+    <logger name="org.jasig.cas" level="info">
     </logger>
 </configuration>

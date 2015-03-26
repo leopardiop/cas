@@ -1,1 +1,1 @@
-callback({'lt':'${loginTicket}','execution':'${flowExecutionKey}','login':'${isLogin}',captcha:'${captcha}',count:'${count}'});
+callback({'lt':'${loginTicket}','execution':'${flowExecutionKey}','login':'${isLogin}',captcha:'${captcha}',count:'${count}',same:'${same}'});

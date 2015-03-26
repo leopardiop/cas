@@ -36,9 +36,6 @@ public class ExtSendTicketGrantingTicketAction extends AbstractAction {
             this.centralAuthenticationService
                     .destroyTicketGrantingTicket(ticketGrantingTicketValueFromCookie);
         }
-
-        System.out.println("ticketGrantingTicketId = " + ticketGrantingTicketId);
-
         return success();
     }
 

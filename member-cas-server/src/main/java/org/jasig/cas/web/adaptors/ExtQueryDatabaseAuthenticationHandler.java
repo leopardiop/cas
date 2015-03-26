@@ -3,6 +3,7 @@ package org.jasig.cas.web.adaptors;
 import org.jasig.cas.adaptors.jdbc.AbstractJdbcUsernamePasswordAuthenticationHandler;
 import org.jasig.cas.authentication.handler.AuthenticationException;
 import org.jasig.cas.authentication.principal.UsernamePasswordCredentials;
+import org.jasig.cas.ticket.registry.LoginedRegistry;
 import org.jasig.cas.util.encoder.DesHelper;
 import org.jasig.cas.web.PasswordParser;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
@@ -20,6 +21,8 @@ public class ExtQueryDatabaseAuthenticationHandler extends AbstractJdbcUsernameP
 
     private PasswordParser parser;
 
+    private LoginedRegistry loginedRegistry;
+
     protected final boolean authenticateUsernamePasswordInternal(final UsernamePasswordCredentials credentials) throws AuthenticationException {
         String username = getPrincipalNameTransformer().transform(credentials.getUsername()).toLowerCase();
         String password = credentials.getPassword();
@@ -34,7 +37,12 @@ public class ExtQueryDatabaseAuthenticationHandler extends AbstractJdbcUsernameP
 
             String encryptedPassword = this.parser.parse(password+id);
 
-            return dbPassword.equals(encryptedPassword);
+            boolean flag = dbPassword.equals(encryptedPassword);
+            if(flag){
+                loginedRegistry.put(username,id);
+            }
+
+            return flag;
         } catch (final IncorrectResultSizeDataAccessException e) {
             // this means the username was not found.
             e.printStackTrace();
@@ -55,5 +63,9 @@ public class ExtQueryDatabaseAuthenticationHandler extends AbstractJdbcUsernameP
 
     public void setParser(PasswordParser parser) {
         this.parser = parser;
+    }
+
+    public void setLoginedRegistry(LoginedRegistry loginedRegistry) {
+        this.loginedRegistry = loginedRegistry;
     }
 }

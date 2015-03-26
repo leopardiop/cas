@@ -16,7 +16,10 @@ public final class CaptchaValidateAction extends AbstractAction {
 
 	protected Event doExecute(final RequestContext context) {
 		String captcha_response = context.getRequestParameters().get(captchaValidationParameter);
-		boolean valid = true;
+		String username = context.getRequestParameters().get("username");
+
+        context.getFlowScope().put("username",username);
+        boolean valid = true;
 
         int count = FlowScopeUtils.isExist(context,"count") ? (Integer)context.getFlowScope().get("count") : 0;
 

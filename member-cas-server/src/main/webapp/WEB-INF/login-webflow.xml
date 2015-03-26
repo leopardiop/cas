@@ -29,10 +29,12 @@
         <evaluate expression="initialFlowSetupAction"/>
     </on-start>
 
-    <!-- custom -->
+    <!-- custom 请求的入口 -->
     <action-state id="provideLoginTicket">
         <evaluate expression="provideLoginTicketAction"/>
+        <transition on="suspend" to="loginResponse"/>
         <transition on="loginTicketRequested" to="loginResponse"/>
+        <!--  已登录  -->
         <transition on="logined" to="ticketGrantingTicketExistsCheck"/>
         <transition on="continue" to="ticketGrantingTicketExistsCheck"/>
     </action-state>
@@ -50,6 +52,7 @@
         <if test="flowScope.service != null" then="renewRequestCheck" else="viewGenericLoginSuccess"/>
     </decision-state>
 
+    <!-- 执行generateServiceTicket，表明登录验证成功 -->
     <decision-state id="renewRequestCheck">
         <if test="requestParameters.renew != '' and requestParameters.renew != null" then="serviceAuthorizationCheck"
             else="generateServiceTicket"/>
@@ -128,6 +131,7 @@
         <transition on="error" to="loginResponse" />
     </action-state>
 
+    <!--    custom   -->
     <action-state id="loginErrorCount">
         <evaluate expression="loginErrorCountAction" />
         <transition on="error" to="loginResponse" />
@@ -141,6 +145,7 @@
         <transition on="error" to="loginErrorCount" />
     </action-state>
 
+    <!--    custom -->
     <action-state id="loginResponse">
         <evaluate expression="ajaxLoginServiceTicketAction" />
         <transition on="success" to="viewAjaxLoginView" />
@@ -149,6 +154,7 @@
         <transition on="loginTicketRequested" to="ajaxLoginRequestView" />
     </action-state>
 
+    <!--  登录提交  -->
     <view-state id="ajaxLoginRequestView" view="ajaxLoginRequestView" model="credentials">
         <var name="credentials" class="org.jasig.cas.authentication.principal.UsernamePasswordCredentials"/>
         <binder>

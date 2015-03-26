@@ -132,19 +132,21 @@
                 <bean class="org.jasig.cas.web.adaptors.ExtQueryDatabaseAuthenticationHandler">
                     <property name="dataSource" ref="dataSource"/>
                     <property name="parser" ref="parser" />
+                    <property name="loginedRegistry" ref="loginedRegistry" />
                     <property name="sql" value="select * from m_member where (username = ? or email = ? or mobile = ?) and status='ACTIVATE'"/>
                 </bean>
 			</list>
 		</property>
 	</bean>
 
-    <bean id="parser" class="org.jasig.cas.web.SimplePasswordParser"/>
+    <bean id="loginedRegistry" class="org.jasig.cas.ticket.registry.LoginedRegistry"/>
 
-    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://172.19.27.252:3306/dev"/>
-        <property name="username" value="ehking-dev"/>
-        <property name="password" value="BmZyqzDmnsK3Q6eW"/>
+    <bean id="parser" class="org.jasig.cas.web.SimplePasswordParser"/>
+    
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName">
+            <value>java:comp/env/jdbc/MEMBERDS</value>
+        </property>
     </bean>
 
 	<!--
